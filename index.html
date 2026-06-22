@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sevgili STEM Günlüğü</title>
+<style>
+:root{--bg1:#eaf6ff;--bg2:#f7fff2;--ink:#24364b;--muted:#6b7280;--card:#ffffffdd;--blue:#3b82f6;--green:#22c55e;--red:#ef4444;--purple:#8b5cf6;--gold:#f59e0b}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);min-height:100vh;background:radial-gradient(circle at top left,#fff7ad55,transparent 32%),linear-gradient(135deg,var(--bg1),var(--bg2));padding:22px}.wrap{max-width:900px;margin:auto}.card{background:var(--card);backdrop-filter:blur(8px);border-radius:26px;box-shadow:0 18px 45px #0001;padding:26px;margin:18px 0;border:1px solid #ffffffaa}.center{text-align:center}h1{font-size:clamp(32px,5vw,50px);margin:6px 0 4px}h2{margin-top:0}.subtitle{color:#4b5563;font-style:italic}.dayBtn{width:100%;border:3px solid;border-radius:18px;background:#fff;padding:18px 20px;margin:14px 0;font-size:21px;font-weight:850;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:.15s}.dayBtn:hover{transform:translateY(-2px);box-shadow:0 10px 22px #0001}.blue{color:#1d4ed8;border-color:#3b82f6}.green{color:#15803d;border-color:#22c55e}.red{color:#b91c1c;border-color:#ef4444}.purple{color:#6d28d9;border-color:#8b5cf6}.panelBtn{width:100%;border:2px dashed #64748b;border-radius:16px;background:#fff;padding:15px;font-weight:800;cursor:pointer}label{display:block;font-weight:900;margin:18px 0 6px;font-size:17px}.hint{display:block;color:#6b7280;margin-bottom:8px;font-size:14px}input,textarea,select{width:100%;border:2px solid #d7dde6;border-radius:15px;padding:14px;font-size:17px;background:#fff}textarea{min-height:96px;resize:vertical}.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1}.btn{border:0;border-radius:15px;padding:15px 20px;font-weight:900;font-size:16px;cursor:pointer}.primary{background:#334155;color:white}.success{background:#16a34a;color:white}.light{background:#e2e8f0;color:#263445}.danger{background:#ef4444;color:white}.badge{display:inline-flex;gap:8px;align-items:center;padding:12px 16px;border-radius:999px;background:#fff7ed;border:2px solid #fed7aa;color:#9a3412;font-weight:900;margin:8px 0}.hidden{display:none}.entry{border-left:6px solid #3b82f6;background:#fff;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 8px 20px #0000000c}.entry h3{margin:0 0 8px}.small{font-size:14px;color:#6b7280}.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.pill{padding:7px 11px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:850}.done{font-size:15px;color:#15803d;margin-left:8px}.confetti{font-size:50px;line-height:1}.hr{height:1px;background:#e5e7eb;margin:18px 0}.emojiGrid,.starGrid{display:flex;gap:10px;flex-wrap:wrap}.emojiBtn,.starBtn{border:2px solid #d7dde6;background:#fff;border-radius:16px;padding:11px 13px;font-size:28px;cursor:pointer;transition:.15s}.emojiBtn.active,.starBtn.active{border-color:#f59e0b;background:#fff7ed;transform:translateY(-2px);box-shadow:0 8px 18px #0001}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:white;padding:14px 18px;border-radius:16px;font-weight:800;box-shadow:0 12px 25px #0003;z-index:10;display:none}.spark{font-size:34px}@media(max-width:560px){body{padding:12px}.card{padding:18px}.dayBtn{font-size:18px}.row{display:block}.row .btn{width:100%;margin-top:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="home" class="card center">
+    <div class="spark">🚀 🌱 🔬 ⭐ 🏅</div>
+    <h1>Sevgili STEM Günlüğü</h1>
+    <div class="subtitle">Bugünün keşfini, duygunu ve geleceğe fikrini yaz.</div>
+    <div class="hr"></div>
+    <button class="dayBtn blue" onclick="openDay(1)"><span>1. Gün – Gökyüzüne Yolculuk <span id="d1" class="done"></span></span><span>🚀</span></button>
+    <button class="dayBtn green" onclick="openDay(2)"><span>2. Gün – Doğadan Öğreniyorum <span id="d2" class="done"></span></span><span>🌿</span></button>
+    <button class="dayBtn red" onclick="openDay(3)"><span>3. Gün – Kültürel Miras ve Su <span id="d3" class="done"></span></span><span>💧</span></button>
+    <button class="dayBtn purple" onclick="openDay(4)"><span>4. Gün – Teknoloji, Dönüşüm ve Gelecek <span id="d4" class="done"></span></span><span>🤖</span></button>
+    <button class="panelBtn" onclick="showPanel()">⚙️ Öğretmen Paneli</button>
+  </section>
+
+  <section id="formCard" class="card hidden">
+    <div class="topbar"><h2 id="formTitle">Günlük</h2><span class="pill" id="dayTheme"></span></div>
+    <form id="journalForm">
+      <input type="hidden" id="day">
+      <label>1. Adın Soyadın</label>
+      <span class="hint">Adını ve soyadını yaz</span>
+      <input id="name" required placeholder="Adını ve soyadını yaz" autocomplete="name">
+
+      <label>2. Bugünü 3 kelimeyle anlat</label>
+      <span class="hint">Örn: merak, eğlence, roket</span>
+      <input id="threeWords" required placeholder="Örn: merak, eğlence, roket">
+
+      <label>3. Bugün öğrendiğim en ilginç bilgi</label>
+      <span class="hint">Seni heyecanlandıran bilgi neydi?</span>
+      <textarea id="interesting" required placeholder="Bugün öğrendiğim en ilginç bilgi..."></textarea>
+
+      <label>4. Bugünkü etkinlik bana ne düşündürdü?</label>
+      <span class="hint">Aklına hangi yeni sorular takıldı?</span>
+      <textarea id="thought" required placeholder="Aklıma takılan yeni sorular..."></textarea>
+
+      <label>5. Bugünden geleceğe götüreceğim fikir</label>
+      <span class="hint">Bu fikir gelecekte ne işe yarayabilir?</span>
+      <textarea id="futureIdea" required placeholder="Geleceğe taşıyacağım fikrim..."></textarea>
+
+      <label>6. Bugünkü duygu emojim</label>
+      <span class="hint">Bugünü en iyi anlatan emojiyi seç</span>
+      <div class="emojiGrid" id="emojiGrid"></div>
+
+      <label>7. Bugüne verdiğim yıldız puanı</label>
+      <span class="hint">1-5 arası yıldız seç</span>
+      <div class="starGrid" id="starGrid"></div>
+
+      <div class="row" style="margin-top:24px">
+        <button class="btn light" type="button" onclick="goHome()">🏠 Ana Ekrana Dön</button>
+        <button class="btn primary" type="submit">💾 Kaydet ve Rozetimi Al</button>
+      </div>
+    </form>
+  </section>
+
+  <section id="result" class="card center hidden">
+    <div class="confetti">🎉✨🎊</div>
+    <h2>Günlüğün kaydedildi!</h2>
+    <div id="badgeBox" class="badge"></div>
+    <p class="small">Emoji, yıldız puanın ve rozetin öğretmen paneline işlendi.</p>
+    <button class="btn primary" onclick="goHome()">🏠 Ana Ekrana Dön</button>
+  </section>
+
+  <section id="panel" class="card hidden">
+    <div class="topbar">
+      <h2>⚙️ Öğretmen İzleme Paneli</h2>
+      <button class="btn success" onclick="downloadCSV()">📊 CSV Olarak İndir</button>
+    </div>
+    <div class="row">
+      <div><label>Güne Göre Filtrele</label><select id="filterDay" onchange="renderEntries()"><option value="all">Tüm Günler</option><option value="1">1. Gün</option><option value="2">2. Gün</option><option value="3">3. Gün</option><option value="4">4. Gün</option></select></div>
+      <div><label>Öğrenci Ara</label><input id="searchName" oninput="renderEntries()" placeholder="İsim yaz"></div>
+    </div>
+    <div class="hr"></div>
+    <div id="summary" class="small"></div>
+    <div id="entries"></div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn light" onclick="goHome()">🏠 Ana Ekrana Dön</button>
+      <button class="btn danger" onclick="clearAll()">Tüm Kayıtları Sil</button>
+    </div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const KEY='sevgiliStemGunluguFinalGuzelV2';
+const themes={1:'Gökyüzüne Yolculuk',2:'Doğadan Öğreniyorum',3:'Kültürel Miras ve Su',4:'Teknoloji, Dönüşüm ve Gelecek'};
+const badges={1:'🚀 Gökyüzü Kaşifi',2:'🌿 Doğa Dedektifi',3:'💧 Su ve Kültür Elçisi',4:'🤖 Gelecek Tasarımcısı'};
+const emojis=['😀','😍','😎','🤔','😴','😕'];
+let selectedEmoji='', selectedStars=0;
+function getData(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+function setData(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function hideAll(){['home','formCard','result','panel'].forEach(id=>document.getElementById(id).classList.add('hidden'))}
+function goHome(){hideAll();document.getElementById('home').classList.remove('hidden');updateHome()}
+function toastMsg(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
+function renderEmoji(){emojiGrid.innerHTML='';emojis.forEach(e=>{const b=document.createElement('button');b.type='button';b.className='emojiBtn'+(selectedEmoji===e?' active':'');b.textContent=e;b.onclick=()=>{selectedEmoji=e;renderEmoji()};emojiGrid.appendChild(b)})}
+function renderStars(){starGrid.innerHTML='';for(let i=1;i<=5;i++){const b=document.createElement('button');b.type='button';b.className='starBtn'+(i<=selectedStars?' active':'');b.textContent='⭐';b.onclick=()=>{selectedStars=i;renderStars()};starGrid.appendChild(b)}}
+function openDay(n){hideAll();document.getElementById('formCard').classList.remove('hidden');document.getElementById('day').value=n;document.getElementById('formTitle').textContent=n+'. Gün Günlüğüm';document.getElementById('dayTheme').textContent=themes[n];document.getElementById('journalForm').reset();document.getElementById('day').value=n;selectedEmoji='';selectedStars=0;renderEmoji();renderStars();}
+function normalize(s){return (s||'').trim().toLocaleLowerCase('tr-TR')}
+function earnedMaster(name,data){const days=new Set(data.filter(x=>normalize(x.name)===normalize(name)).map(x=>Number(x.day)));return [1,2,3,4].every(d=>days.has(d))}
+document.getElementById('journalForm').addEventListener('submit',e=>{e.preventDefault();if(!selectedEmoji){toastMsg('Lütfen 6. soruda bir emoji seç.');return}if(!selectedStars){toastMsg('Lütfen 7. soruda yıldız puanı seç.');return}const data=getData();const entry={id:Date.now(),date:new Date().toLocaleString('tr-TR'),day:+day.value,name:name.value.trim(),threeWords:threeWords.value.trim(),interesting:interesting.value.trim(),thought:thought.value.trim(),futureIdea:futureIdea.value.trim(),emoji:selectedEmoji,stars:selectedStars,badge:badges[+day.value]};data.push(entry);setData(data);const master=earnedMaster(entry.name,data);hideAll();document.getElementById('result').classList.remove('hidden');document.getElementById('badgeBox').textContent=entry.badge+(master?' + 🏆 STEM Ustası':'');updateHome();});
+function updateHome(){const data=getData();[1,2,3,4].forEach(d=>{const c=data.filter(x=>+x.day===d).length;document.getElementById('d'+d).textContent=c?`✓ ${c} kayıt`:''})}
+function showPanel(){hideAll();document.getElementById('panel').classList.remove('hidden');renderEntries()}
+function escapeHTML(s){return String(s||'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]||m))}
+function renderEntries(){const data=getData();const f=document.getElementById('filterDay').value;const q=normalize(document.getElementById('searchName').value);let rows=data.filter(x=>(f==='all'||String(x.day)===f)&&(!q||normalize(x.name).includes(q))).sort((a,b)=>b.id-a.id);const avg=data.length?(data.reduce((a,b)=>a+Number(b.stars||0),0)/data.length).toFixed(1):'0';document.getElementById('summary').innerHTML=`Toplam kayıt: <b>${data.length}</b> | Görünen kayıt: <b>${rows.length}</b> | Benzersiz öğrenci: <b>${new Set(data.map(x=>normalize(x.name))).size}</b> | Ortalama yıldız: <b>${avg}</b>`;document.getElementById('entries').innerHTML=rows.length?rows.map(x=>`<div class="entry"><div class="topbar"><h3>👤 ${escapeHTML(x.name)}</h3><span class="pill">${x.day}. Gün</span></div><p><b>2. 3 Kelime:</b> ${escapeHTML(x.threeWords)}</p><p><b>3. En ilginç bilgi:</b> ${escapeHTML(x.interesting)}</p><p><b>4. Düşündürdükleri:</b> ${escapeHTML(x.thought)}</p><p><b>5. Geleceğe fikrim:</b> ${escapeHTML(x.futureIdea)}</p><p><b>6. Emoji:</b> ${escapeHTML(x.emoji)} &nbsp; <b>7. Yıldız:</b> ${'⭐'.repeat(Number(x.stars||0))}</p><p><b>Rozet:</b> ${escapeHTML(x.badge)} ${earnedMaster(x.name,data)?' + 🏆 STEM Ustası':''}</p><p class="small">Kayıt Tarihi: ${escapeHTML(x.date)}</p></div>`).join(''):'<p>Henüz kayıt yok.</p>'}
+function csvCell(v){return '"'+String(v||'').replace(/"/g,'""')+'"'}
+function downloadCSV(){const data=getData();const header=['Tarih','Gün','Öğrenci','2. 3 Kelime','3. En İlginç Bilgi','4. Düşündürdü','5. Geleceğe Fikir','6. Emoji','7. Yıldız','Rozet','STEM Ustası'];const lines=[header.map(csvCell).join(';')];data.forEach(x=>lines.push([x.date,x.day,x.name,x.threeWords,x.interesting,x.thought,x.futureIdea,x.emoji,x.stars,x.badge,earnedMaster(x.name,data)?'Evet':'Hayır'].map(csvCell).join(';')));const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sevgili_stem_gunlugu_kayitlari.csv';a.click();URL.revokeObjectURL(a.href)}
+function clearAll(){if(confirm('Tüm kayıtlar silinsin mi?')){localStorage.removeItem(KEY);renderEntries();updateHome()}}
+renderEmoji();renderStars();updateHome();
+</script>
+</body>
+</html>
