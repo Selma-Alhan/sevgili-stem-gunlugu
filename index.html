@@ -66,7 +66,7 @@
     <div class="confetti">🎉✨🎊</div>
     <h2>Günlüğün kaydedildi!</h2>
     <div id="badgeBox" class="badge"></div>
-    <p class="small">Emoji, yıldız puanın ve rozetin öğretmen paneline işlendi.</p>
+    <p class="small">Emoji, yıldız puanın ve rozetin Google Sheet tablosuna gönderildi.</p>
     <button class="btn primary" onclick="goHome()">🏠 Ana Ekrana Dön</button>
   </section>
 
@@ -90,7 +90,8 @@
 </div>
 <div class="toast" id="toast"></div>
 <script>
-const KEY='sevgiliStemGunluguFinalGuzelV2';
+const KEY='sevgiliStemGunluguFinalGuzelV3';
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwoFnxbbfvnlNqCadvqy5cSJptIlxNKRec2qaYJmn4_GqfJjFupqOIko8uv6WUPcCI-/exec';
 const themes={1:'Gökyüzüne Yolculuk',2:'Doğadan Öğreniyorum',3:'Kültürel Miras ve Su',4:'Teknoloji, Dönüşüm ve Gelecek'};
 const badges={1:'🚀 Gökyüzü Kaşifi',2:'🌿 Doğa Dedektifi',3:'💧 Su ve Kültür Elçisi',4:'🤖 Gelecek Tasarımcısı'};
 const emojis=['😀','😍','😎','🤔','😴','😕'];
@@ -105,7 +106,44 @@ function renderStars(){starGrid.innerHTML='';for(let i=1;i<=5;i++){const b=docum
 function openDay(n){hideAll();document.getElementById('formCard').classList.remove('hidden');document.getElementById('day').value=n;document.getElementById('formTitle').textContent=n+'. Gün Günlüğüm';document.getElementById('dayTheme').textContent=themes[n];document.getElementById('journalForm').reset();document.getElementById('day').value=n;selectedEmoji='';selectedStars=0;renderEmoji();renderStars();}
 function normalize(s){return (s||'').trim().toLocaleLowerCase('tr-TR')}
 function earnedMaster(name,data){const days=new Set(data.filter(x=>normalize(x.name)===normalize(name)).map(x=>Number(x.day)));return [1,2,3,4].every(d=>days.has(d))}
-document.getElementById('journalForm').addEventListener('submit',e=>{e.preventDefault();if(!selectedEmoji){toastMsg('Lütfen 6. soruda bir emoji seç.');return}if(!selectedStars){toastMsg('Lütfen 7. soruda yıldız puanı seç.');return}const data=getData();const entry={id:Date.now(),date:new Date().toLocaleString('tr-TR'),day:+day.value,name:name.value.trim(),threeWords:threeWords.value.trim(),interesting:interesting.value.trim(),thought:thought.value.trim(),futureIdea:futureIdea.value.trim(),emoji:selectedEmoji,stars:selectedStars,badge:badges[+day.value]};data.push(entry);setData(data);const master=earnedMaster(entry.name,data);hideAll();document.getElementById('result').classList.remove('hidden');document.getElementById('badgeBox').textContent=entry.badge+(master?' + 🏆 STEM Ustası':'');updateHome();});
+document.getElementById('journalForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!selectedEmoji){toastMsg('Lütfen 6. soruda bir emoji seç.');return}
+  if(!selectedStars){toastMsg('Lütfen 7. soruda yıldız puanı seç.');return}
+  const data=getData();
+  const entry={id:Date.now(),date:new Date().toLocaleString('tr-TR'),day:+day.value,name:name.value.trim(),threeWords:threeWords.value.trim(),interesting:interesting.value.trim(),thought:thought.value.trim(),futureIdea:futureIdea.value.trim(),emoji:selectedEmoji,stars:selectedStars,badge:badges[+day.value]};
+  data.push(entry);
+  setData(data);
+
+  const sheetData={
+    gun: entry.day+'. Gün - '+themes[entry.day],
+    adSoyad: entry.name,
+    ucKelime: entry.threeWords,
+    ilgincBilgi: entry.interesting,
+    dusundurdugu: entry.thought,
+    gelecekFikir: entry.futureIdea,
+    duygu: entry.emoji,
+    yildiz: entry.stars,
+    rozet: entry.badge
+  };
+
+  try{
+    await fetch(GOOGLE_SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(sheetData)
+    });
+  }catch(err){
+    console.warn('Google Sheet gönderimi yapılamadı, kayıt cihazda saklandı.', err);
+  }
+
+  const master=earnedMaster(entry.name,data);
+  hideAll();
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('badgeBox').textContent=entry.badge+(master?' + 🏆 STEM Ustası':'');
+  updateHome();
+});
 function updateHome(){const data=getData();[1,2,3,4].forEach(d=>{const c=data.filter(x=>+x.day===d).length;document.getElementById('d'+d).textContent=c?`✓ ${c} kayıt`:''})}
 function showPanel(){hideAll();document.getElementById('panel').classList.remove('hidden');renderEntries()}
 function escapeHTML(s){return String(s||'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]||m))}
